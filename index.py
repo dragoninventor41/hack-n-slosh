@@ -26,7 +26,7 @@ class Knight(pygame.sprite.Sprite):
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 
-		self.idle_sprite = pygame.image.load('assets/smiley.png').convert()
+		self.idle_sprite = pygame.image.load('assets/necromancer.jpg').convert()
 		self.idle_sprite = pygame.transform.scale(self.idle_sprite, (50, 50))
 
 		self.image = self.idle_sprite
