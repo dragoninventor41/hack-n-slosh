@@ -7,30 +7,28 @@ pygame.init()
 
 from globals import *
 from scaling import *
-from buttons import *
+# from buttons import *
 from player import *
 from playerClasses import *
 
-# background = pygame.Surface(screen.get_size())
-# background = background.convert()
-# background.fill(DARK_GRAY)
-
-
+# Scene
+scene = "game"
 
 # Title
 pygame.display.set_caption("Hack-n-slosh")
 
+# playButton = StartMenuButton("Play", ((200, 200)), "game")
 def startMenu():
 	# play = Button(default_font, "Play", 48, ((200, 200), (100, 40)))
 	# play = Button(default_font, "Play", 48, ((200, 200)), WHITE, BLACK, on_click="game")
+	# playButton.render()
 	text = defaultFont.render("Hack-N-Slosh", True, WHITE)
 	screen.blit(text, (screenPercent('x', 50, text.get_width()), screenPercent('y', 15, text.get_height())))
 
-# def platform():
-	
-
 # Sets player class
 player = Player(Necromancer())
+
+# ground = pygame.Rect()
 
 # Game loop
 while True:

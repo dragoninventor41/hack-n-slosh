@@ -2,7 +2,6 @@ import pygame
 
 # Global Variables
 clock = pygame.time.Clock()
-scene = "game"
 fps = 60
 screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
 

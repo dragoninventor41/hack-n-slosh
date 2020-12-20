@@ -1,6 +1,9 @@
 import pygame
+import sys
+
 from scaling import *
 from globals import *
+from platform import *
 
 class Player:
 	def __init__(self, player_class):
@@ -16,6 +19,9 @@ class Player:
 		self.offsetX = 0
 		self.offsetY = 0
 
+		self.is_jumping = True
+		self.is_falling = False
+		
 		self.x = self.centerX + self.offsetX
 		self.y = self.centerY + self.offsetY
 
@@ -24,9 +30,6 @@ class Player:
 
 		self.leftPressed = False
 		self.rightPressed = False
-
-		self.is_jumping = False
-		self.is_falling = False
 
 		self.player_class.image = pygame.transform.scale(self.player_class.image, (self.width, self.height))
 
@@ -38,10 +41,9 @@ class Player:
 			if event.key == pygame.K_RIGHT:
 				self.velocity = self.speed
 				self.rightPressed = True
-			if event.key == pygame.K_SPACE:
-				self.is_jumping = True
-				self.is_falling = False
-				# self.offsetY can be used to move the character up and down
+
+			if event.key == pygame.K_SPACE or event.key == ord('w'):
+				self.jump()
 
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT:
@@ -68,3 +70,33 @@ class Player:
 
 		if self.leftPressed == True or self.rightPressed == True:
 			self.offsetX += self.velocity
+			
+		ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
+		for g in ground_hit_list:
+			self.offsetY = 0
+			self.rect.bottom = g.rect.top
+			self.is_jumping = False
+
+
+	def gravity(self):
+		if self.is_jumping == True:
+			self.offsetY += 3.2
+
+	def jump(self):
+		if self.is_jumping == False:
+			self.is_falling = False
+			self.is_jumping = True
+		if self.is_jumping and self.is_falling == False:
+			self.is_falling = True
+			self.offsetY -= 33
+
+# plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
+		# for p in plat_hit_list:
+		# 	self.is_jumping = False
+		# 	self.offsetY
+
+		# 	#approach from bellow
+		# 	if self.rect.bottom <= p.rect.bottom:
+		# 		self.rect.bottom = p.rect.top
+		# 	else:
+		# 		self.offsetY += 3.2
