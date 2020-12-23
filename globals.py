@@ -1,9 +1,12 @@
 import pygame
 
+pygame.font.init()
+
 # Global Variables
 clock = pygame.time.Clock()
 fps = 60
 screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+platformList = []
 
 # Colors
 WHITE = (255, 255, 255)

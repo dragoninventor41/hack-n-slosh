@@ -6,10 +6,17 @@ class Platform(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load(os.path.join('images', img)).convert()
 		self.image.convert_alpha()
-		self.image.set_colorkey(ALPHA)
+		self.image.set_colorkey()
 		self.rect = self.image.get_rect()
 		self.rect.y = y
 		self.rect.x = x
 
+		global platformList
+		# platformList += len(platformList)
+		platformList.append({
+			"test": 5,
+			"test2": 6
+		})
+
 	def render(self):
-		
+		pass

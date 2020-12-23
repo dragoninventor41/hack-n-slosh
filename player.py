@@ -19,7 +19,7 @@ class Player:
 		self.offsetX = 0
 		self.offsetY = 0
 
-		self.is_jumping = True
+		self.is_jumping = False
 		self.is_falling = False
 		
 		self.x = self.centerX + self.offsetX
@@ -33,6 +33,8 @@ class Player:
 
 		self.player_class.image = pygame.transform.scale(self.player_class.image, (self.width, self.height))
 
+		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_LEFT:
@@ -42,7 +44,7 @@ class Player:
 				self.velocity = self.speed
 				self.rightPressed = True
 
-			if event.key == pygame.K_SPACE or event.key == ord('w'):
+			if event.key == pygame.K_SPACE or event.key == ord('w') or event.key == pygame.K_UP:
 				self.jump()
 
 		if event.type == pygame.KEYUP:
@@ -71,11 +73,13 @@ class Player:
 		if self.leftPressed == True or self.rightPressed == True:
 			self.offsetX += self.velocity
 			
-		ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
-		for g in ground_hit_list:
+		platformHitList = pygame.sprite.spritecollide(self, platformList, False)
+		for platform in platformHitList:
 			self.offsetY = 0
-			self.rect.bottom = g.rect.top
+			self.rect.bottom = platform.rect.top
 			self.is_jumping = False
+
+		self.gravity()
 
 
 	def gravity(self):
@@ -88,15 +92,5 @@ class Player:
 			self.is_jumping = True
 		if self.is_jumping and self.is_falling == False:
 			self.is_falling = True
-			self.offsetY -= 33
+			self.offsetY -= 100
 
-# plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
-		# for p in plat_hit_list:
-		# 	self.is_jumping = False
-		# 	self.offsetY
-
-		# 	#approach from bellow
-		# 	if self.rect.bottom <= p.rect.bottom:
-		# 		self.rect.bottom = p.rect.top
-		# 	else:
-		# 		self.offsetY += 3.2

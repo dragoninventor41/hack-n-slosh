@@ -8,6 +8,7 @@ pygame.init()
 from globals import *
 from scaling import *
 # from buttons import *
+from platform import *
 from player import *
 from playerClasses import *
 
@@ -29,6 +30,8 @@ def startMenu():
 player = Player(Necromancer())
 
 # ground = pygame.Rect()
+
+ground = Platform()
 
 # Game loop
 while True:
@@ -55,5 +58,7 @@ while True:
 	clock.tick(fps)
 
 	player.update()
+
+	print(platformList)
 
 	pygame.display.update()
