@@ -1,4 +1,3 @@
-import pygame
 from globals import *
 
 def screenPercent(x_or_y, percentage, width_or_height=None, origin='center'):

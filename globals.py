@@ -5,7 +5,8 @@ pygame.font.init()
 # Global Variables
 clock = pygame.time.Clock()
 fps = 60
-screen = pygame.display.set_mode((800, 600), pygame.RESIZABLE)
+WINDOW_SIZE = (1200, 800)
+screen = pygame.display.set_mode(WINDOW_SIZE)
 platformList = []
 
 # Colors

@@ -1,35 +1,36 @@
 import pygame
-import sys
 
-from scaling import *
+from scaling import screenPercent
 from globals import *
 from platform import *
+from player_classes import *
+
+test_rect = pygame.Rect(100, 550, 50, 50)
 
 class Player:
 	def __init__(self, player_class):
 		pygame.sprite.Sprite.__init__(self)
 		self.player_class = player_class
 
-		self.width = screenPercent('x', 20)
-		self.height = self.width
+		self.width = 100
+		self.height = 100
 
-		self.centerX = screenPercent('x', 50, self.width)
-		self.centerY = screenPercent('y', 50, self.height)
+		# self.offset_x = 0
+		# self.offset_y = 0
 
-		self.offsetX = 0
-		self.offsetY = 0
+		self.x = screenPercent('x', 50)
+		self.y = screenPercent('y', 50)
 
 		self.is_jumping = False
 		self.is_falling = False
-		
-		self.x = self.centerX + self.offsetX
-		self.y = self.centerY + self.offsetY
 
 		self.speed = 6
-		self.velocity = 0
+		# self.jump_speed = 4
 
-		self.leftPressed = False
-		self.rightPressed = False
+		self.velocity = [0, 0] # x, y
+
+		self.left_pressed = False
+		self.right_pressed = False
 
 		self.player_class.image = pygame.transform.scale(self.player_class.image, (self.width, self.height))
 
@@ -38,59 +39,43 @@ class Player:
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_LEFT:
-				self.velocity = -self.speed
-				self.leftPressed = True
+				self.velocity[0] = -self.speed
+				self.left_pressed = True
 			if event.key == pygame.K_RIGHT:
-				self.velocity = self.speed
-				self.rightPressed = True
+				self.velocity[0] = self.speed
+				self.right_pressed = True
 
-			if event.key == pygame.K_SPACE or event.key == ord('w') or event.key == pygame.K_UP:
-				self.jump()
+			# if event.key == pygame.K_SPACE or event.key == ord('w') or event.key == pygame.K_UP:
+			# 	self.jump()
 
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT:
-				self.velocity = self.speed
-				self.leftPressed = False
+				self.velocity[0] = self.speed
+				self.left_pressed = False
 			if event.key == pygame.K_RIGHT:
-				self.velocity = -self.speed
-				self.rightPressed = False
-		
+				self.velocity[0] = -self.speed
+				self.right_pressed = False
+
 	def update(self):
 		pygame.sprite.Sprite.update(self)
 		self.player_class.rect.topleft = self.x, self.y
 
-		self.centerX = screenPercent('x', 50, self.width)
-		self.centerY = screenPercent('y', 50, self.height)
+		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-		self.x = self.centerX + self.offsetX
-		self.y = self.centerY + self.offsetY
-
-		self.width = screenPercent('x', 8)
-		self.height = self.width
-
-		self.player_class.image = pygame.transform.scale(self.player_class.image, (self.width, self.height))
-
-		if self.leftPressed == True or self.rightPressed == True:
-			self.offsetX += self.velocity
-			
-		platformHitList = pygame.sprite.spritecollide(self, platformList, False)
-		for platform in platformHitList:
-			self.offsetY = 0
-			self.rect.bottom = platform.rect.top
-			self.is_jumping = False
-
-		self.gravity()
+		# Updates
+		if self.left_pressed or self.right_pressed:
+			self.x += self.velocity[0]
+		self.y += self.velocity[1]
 
 
-	def gravity(self):
-		if self.is_jumping == True:
-			self.offsetY += 3.2
+		# Detects collision against ground
+		if self.y > WINDOW_SIZE[1] - self.player_class.image.get_height():
+			self.velocity[1] = -self.velocity[1]
+		else:
+			self.velocity[1] += 0.2
 
-	def jump(self):
-		if self.is_jumping == False:
-			self.is_falling = False
-			self.is_jumping = True
-		if self.is_jumping and self.is_falling == False:
-			self.is_falling = True
-			self.offsetY -= 100
-
+		# Detects if test rect is collided
+		if self.rect.colliderect(test_rect):
+			pygame.draw.rect(screen, (255, 0, 0), test_rect)
+		else:
+			pygame.draw.rect(screen, (255, 255, 255), test_rect)
