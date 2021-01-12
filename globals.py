@@ -1,8 +1,10 @@
+import os
 import pygame
 
 pygame.font.init()
 
 # Global Variables
+path = os.path.dirname(os.path.abspath(__file__))
 clock = pygame.time.Clock()
 fps = 60
 WINDOW_SIZE = (1200, 800)
@@ -16,4 +18,4 @@ DARK_GRAY = (100,100,100)
 BLACK = (0, 0, 0)
 
 # Fonts
-defaultFont = pygame.font.Font('fonts/retro_gaming.ttf', 48)
+defaultFont = pygame.font.Font(f'{path}/fonts/retro_gaming.ttf', 48)

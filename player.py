@@ -12,8 +12,8 @@ class Player:
 		pygame.sprite.Sprite.__init__(self)
 		self.player_class = player_class
 
-		self.width = 100
-		self.height = 100
+		self.width = 80
+		self.height = 80
 
 		# self.offset_x = 0
 		# self.offset_y = 0
