@@ -1,13 +1,12 @@
+from platform import level_1, Level
 import sys
 import pygame
 
-# from platform import Platform
 from scaling import screenPercent
-# from buttons import *
 from player import Player
-from player_classes import Assassin #, Ranger, Mage, Summoner
+from player_classes import Assassin
 
-from globals import *
+from globals import clock, FPS, screen, default_font, WHITE, BLACK
 
 pygame.init()
 
@@ -17,41 +16,41 @@ SCENE = "game"
 # Title
 pygame.display.set_caption("Hack-n-slosh")
 
-# playButton = StartMenuButton("Play", ((200, 200)), "game")
+# Scene Functions
 def start_menu():
-	# play = Button(default_font, "Play", 48, ((200, 200), (100, 40)))
-	# play = Button(default_font, "Play", 48, ((200, 200)), WHITE, BLACK, on_click="game")
-	# playButton.render()
-	text = defaultFont.render("Hack-N-Slosh", True, WHITE)
+	text = default_font.render("Hack-N-Slosh", True, WHITE)
 	screen.blit(text, (screenPercent('x', 50, text.get_width()), screenPercent('y', 15, text.get_height())))
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			sys.exit()
 
-# Sets player class
-player = Player(Assassin())
-
-# Game loop
-while True:
-	screen.fill(BLACK)
-
+def game():
+	level.render()
+	pygame.sprite.RenderPlain((player)).draw(screen)
+	player.update()
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			sys.exit()
 
 		player.get_event(event)
 
-		if event.type == pygame.VIDEORESIZE:
-			screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-			pygame.display.set_caption(f"Hack-n-slosh {screen.get_width()}x{screen.get_height()}") # For testing purposes
+# Sets level
+level = Level(level_1) # Could be converted to sprite / sprite collection?
+
+# Sets player class
+player = Player(Assassin(), level)
+
+# Game loop
+while True:
+	screen.fill(BLACK)
 
 	if SCENE == "start_menu":
 		start_menu()
 	elif SCENE == "game":
-		pygame.sprite.RenderPlain((player.player_class)).draw(screen)
+		game()
 	else:
 		print(f"Invalid scene:\nscene = {SCENE}")
 		break
 
-	clock.tick(fps)
-
-	player.update()
-
+	clock.tick(FPS)
 	pygame.display.update()

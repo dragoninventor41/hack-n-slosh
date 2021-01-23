@@ -1,81 +1,104 @@
 import pygame
 
 from scaling import screenPercent
-from globals import *
-from platform import *
-from player_classes import *
 
-test_rect = pygame.Rect(100, 550, 50, 50)
-
-class Player:
-	def __init__(self, player_class):
+class Player(pygame.sprite.Sprite):
+	def __init__(self, player_class, level):
 		pygame.sprite.Sprite.__init__(self)
+
 		self.player_class = player_class
 
-		self.width = 80
-		self.height = 80
+		self.level = level
 
-		# self.offset_x = 0
-		# self.offset_y = 0
+		self.image = self.player_class.idle_sprite
+		self.image = pygame.transform.scale(self.image, (64, 64))
+
+		self.rect = self.image.get_rect()
+
+		self.width = 64
+		self.height = 64
 
 		self.x = screenPercent('x', 50)
-		self.y = screenPercent('y', 50)
+		self.y = screenPercent('y', 5)
 
-		self.is_jumping = False
-		self.is_falling = False
+		self.moving_right = False
+		self.moving_left = False
 
-		self.speed = 6
-		# self.jump_speed = 4
+		self.player_y_momentum = 0
+		self.air_timer = 0
 
-		self.velocity = [0, 0] # x, y
-
-		self.left_pressed = False
-		self.right_pressed = False
-
-		self.player_class.image = pygame.transform.scale(self.player_class.image, (self.width, self.height))
-
-		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+		self.player_x_momentum = 0
+		self.player_x_speed = 8
 
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_LEFT:
-				self.velocity[0] = -self.speed
-				self.left_pressed = True
+				self.moving_left = True
+				self.player_x_momentum = -self.player_x_speed
 			if event.key == pygame.K_RIGHT:
-				self.velocity[0] = self.speed
-				self.right_pressed = True
+				self.moving_right = True
+				self.player_x_momentum = self.player_x_speed
 
-			# if event.key == pygame.K_SPACE or event.key == ord('w') or event.key == pygame.K_UP:
-			# 	self.jump()
+			if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+				if self.air_timer < 6:
+					self.player_y_momentum = -15
 
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT:
-				self.velocity[0] = self.speed
-				self.left_pressed = False
+				self.moving_left = False
+				self.player_x_momentum = self.player_x_speed
 			if event.key == pygame.K_RIGHT:
-				self.velocity[0] = -self.speed
-				self.right_pressed = False
+				self.moving_right = False
+				self.player_x_momentum = -self.player_x_speed
 
 	def update(self):
 		pygame.sprite.Sprite.update(self)
-		self.player_class.rect.topleft = self.x, self.y
 
-		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+		player_movement = [0, 0]
 
-		# Updates
-		if self.left_pressed or self.right_pressed:
-			self.x += self.velocity[0]
-		self.y += self.velocity[1]
+		if self.moving_left or self.moving_right:
+			player_movement[0] += self.player_x_momentum
 
+		player_movement[1] += self.player_y_momentum
 
-		# Detects collision against ground
-		if self.y > WINDOW_SIZE[1] - self.player_class.image.get_height():
-			self.velocity[1] = -self.velocity[1]
+		self.player_y_momentum += 0.6
+		if self.player_y_momentum > 20:
+			self.player_y_momentum = 20
+
+		self.rect, collisions = self.move(self.rect, player_movement, self.level.tile_rects)
+
+		if collisions['bottom']:
+			self.player_y_momentum = 0
+			self.air_timer = 0
+		elif collisions['top']:
+			self.player_y_momentum = 0
 		else:
-			self.velocity[1] += 0.2
+			self.air_timer += 1
 
-		# Detects if test rect is collided
-		if self.rect.colliderect(test_rect):
-			pygame.draw.rect(screen, (255, 0, 0), test_rect)
-		else:
-			pygame.draw.rect(screen, (255, 255, 255), test_rect)
+	def move(self, rect, movement, tiles):
+		collision_types = {
+			'top': False,
+			'bottom': False,
+			'right': False,
+			'left': False
+		}
+		rect.x += movement[0]
+		hit_list = self.level.collision_test(rect, tiles)
+		for tile in hit_list:
+			if movement[0] > 0:
+				rect.right = tile.left
+				collision_types['right'] = True
+			elif movement[0] < 0:
+				rect.left = tile.right
+				collision_types['left'] = True
+		rect.y += movement[1]
+		hit_list = self.level.collision_test(rect, tiles)
+		for tile in hit_list:
+			if movement[1] > 0:
+				rect.bottom = tile.top
+				collision_types['bottom'] = True
+			elif movement[1] < 0:
+				rect.top = tile.bottom
+				collision_types['top'] = True
+
+		return rect, collision_types
