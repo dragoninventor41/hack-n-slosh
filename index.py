@@ -1,7 +1,6 @@
-from platform import level_1, Level
 import sys
 import pygame
-
+from level import Level, level_1
 from scaling import screenPercent
 from player import Player
 from player_classes import Assassin

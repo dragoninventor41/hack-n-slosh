@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
 		self.height = 64
 
 		self.x = screenPercent('x', 50)
-		self.y = screenPercent('y', 5)
+		self.y = screenPercent('y', 10)
 
 		self.moving_right = False
 		self.moving_left = False
@@ -82,6 +82,7 @@ class Player(pygame.sprite.Sprite):
 			'right': False,
 			'left': False
 		}
+
 		rect.x += movement[0]
 		hit_list = self.level.collision_test(rect, tiles)
 		for tile in hit_list:
@@ -91,6 +92,7 @@ class Player(pygame.sprite.Sprite):
 			elif movement[0] < 0:
 				rect.left = tile.right
 				collision_types['left'] = True
+
 		rect.y += movement[1]
 		hit_list = self.level.collision_test(rect, tiles)
 		for tile in hit_list:
