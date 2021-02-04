@@ -39,8 +39,8 @@ def game():
 	player.update()
 	# pygame.sprite.RenderPlain((player)).draw(screen)
 
-	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 20
-	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 20
+	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 15
+	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 15
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:

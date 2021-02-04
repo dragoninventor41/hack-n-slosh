@@ -41,7 +41,7 @@ class Player(): # (pygame.sprite.Sprite)
 
 			if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
 				if self.air_timer < 6:
-					self.player_y_momentum = -15
+					self.player_y_momentum = -20
 
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT:
