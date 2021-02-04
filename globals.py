@@ -7,7 +7,7 @@ pygame.font.init()
 path = os.path.dirname(os.path.abspath(__file__))
 clock = pygame.time.Clock()
 FPS = 60
-WINDOW_SIZE = (1200, 800)
+WINDOW_SIZE = (1280, 800)
 screen = pygame.display.set_mode(WINDOW_SIZE)
 
 # Colors
@@ -18,3 +18,6 @@ BLACK = (0, 0, 0)
 
 # Fonts
 default_font = pygame.font.Font(f'{path}/fonts/retro_gaming.ttf', 48)
+
+# Scroll
+scroll = [0, 0]

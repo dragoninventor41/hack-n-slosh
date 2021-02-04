@@ -1,10 +1,9 @@
 import pygame
+from globals import scroll, screen
 
-from scaling import screenPercent
-
-class Player(pygame.sprite.Sprite):
+class Player(): # (pygame.sprite.Sprite)
 	def __init__(self, player_class, level):
-		pygame.sprite.Sprite.__init__(self)
+		# pygame.sprite.Sprite.__init__(self)
 
 		self.player_class = player_class
 
@@ -15,17 +14,18 @@ class Player(pygame.sprite.Sprite):
 
 		self.rect = self.image.get_rect()
 
-		self.width = 64
-		self.height = 64
-
-		self.x = screenPercent('x', 50)
-		self.y = screenPercent('y', 10)
+		self.rect.x = 100 + scroll[0]
+		self.rect.y = 100 + scroll[0]
 
 		self.moving_right = False
 		self.moving_left = False
 
 		self.player_y_momentum = 0
 		self.air_timer = 0
+
+		self.player_movement = [0, 0]
+
+		# self.player_momentum = [0, 0]
 
 		self.player_x_momentum = 0
 		self.player_x_speed = 8
@@ -52,20 +52,21 @@ class Player(pygame.sprite.Sprite):
 				self.player_x_momentum = -self.player_x_speed
 
 	def update(self):
-		pygame.sprite.Sprite.update(self)
+		# pygame.sprite.Sprite.update(self)
+		screen.blit(self.image, (self.rect.x - scroll[0], self.rect.y - scroll[1]))
 
-		player_movement = [0, 0]
+		self.player_movement = [0, 0]
 
 		if self.moving_left or self.moving_right:
-			player_movement[0] += self.player_x_momentum
+			self.player_movement[0] += self.player_x_momentum
 
-		player_movement[1] += self.player_y_momentum
+		self.player_movement[1] += self.player_y_momentum
 
 		self.player_y_momentum += 0.6
 		if self.player_y_momentum > 20:
 			self.player_y_momentum = 20
 
-		self.rect, collisions = self.move(self.rect, player_movement, self.level.tile_rects)
+		self.rect, collisions = self.move(self.rect, self.player_movement, self.level.tile_rects)
 
 		if collisions['bottom']:
 			self.player_y_momentum = 0
@@ -102,5 +103,7 @@ class Player(pygame.sprite.Sprite):
 			elif movement[1] < 0:
 				rect.top = tile.bottom
 				collision_types['top'] = True
+			else:
+				rect.y += movement[1]
 
 		return rect, collision_types
