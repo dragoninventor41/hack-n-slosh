@@ -21,35 +21,54 @@ class Player(): # (pygame.sprite.Sprite)
 		self.moving_left = False
 
 		self.player_y_momentum = 0
+		self.player_x_momentum = 0
+
 		self.air_timer = 0
+
+		self.mana = 100
+		self.max_mana = 100
 
 		self.player_movement = [0, 0]
 
-		# self.player_momentum = [0, 0]
+		self.player_speed = 8
+		self.player_dash_speed = 18
 
-		self.player_x_momentum = 0
-		self.player_x_speed = 8
+		self.dash = False
+		self.double_jump = 0
 
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_LEFT:
+			if event.key == pygame.K_LEFT or event.key == pygame.K_a:
 				self.moving_left = True
-				self.player_x_momentum = -self.player_x_speed
-			if event.key == pygame.K_RIGHT:
+				self.player_x_momentum = -self.player_speed
+			if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
 				self.moving_right = True
-				self.player_x_momentum = self.player_x_speed
+				self.player_x_momentum = self.player_speed
 
-			if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+			if event.key == pygame.K_LSHIFT:
+				self.player_speed = 18
+				self.dash = True
+				self.mana -= 5
+
+			if event.key == pygame.K_SPACE or event.key == pygame.K_UP or event.key == pygame.K_w:
 				if self.air_timer < 6:
-					self.player_y_momentum = -20
+					self.player_y_momentum = -12
+				elif self.double_jump < 1:
+					self.double_jump = 1
+					self.player_y_momentum = -12
 
 		if event.type == pygame.KEYUP:
-			if event.key == pygame.K_LEFT:
+			if event.key == pygame.K_LEFT or event.key == pygame.K_a:
 				self.moving_left = False
-				self.player_x_momentum = self.player_x_speed
-			if event.key == pygame.K_RIGHT:
+				self.player_x_momentum = self.player_speed
+			if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
 				self.moving_right = False
-				self.player_x_momentum = -self.player_x_speed
+				self.player_x_momentum = -self.player_speed
+
+			if event.key == pygame.K_LSHIFT:
+				self.dash = False
+				self.player_speed = 8
+
 
 	def update(self):
 		# pygame.sprite.Sprite.update(self)
@@ -63,6 +82,7 @@ class Player(): # (pygame.sprite.Sprite)
 		self.player_movement[1] += self.player_y_momentum
 
 		self.player_y_momentum += 0.6
+
 		if self.player_y_momentum > 20:
 			self.player_y_momentum = 20
 
@@ -71,10 +91,16 @@ class Player(): # (pygame.sprite.Sprite)
 		if collisions['bottom']:
 			self.player_y_momentum = 0
 			self.air_timer = 0
+			self.double_jump = 0
 		elif collisions['top']:
 			self.player_y_momentum = 0
 		else:
 			self.air_timer += 1
+
+		if self.mana < self.max_mana:
+			self.mana += 0.01
+
+		print(self.mana)
 
 	def move(self, rect, movement, tiles):
 		collision_types = {

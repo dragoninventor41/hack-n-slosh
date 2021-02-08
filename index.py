@@ -6,6 +6,8 @@ from player import Player
 from player_classes import Assassin
 from globals import clock, FPS, screen, default_font, WHITE, BLACK, scroll, WINDOW_SIZE
 
+import math
+
 pygame.init()
 
 # Title
@@ -32,13 +34,12 @@ def start_menu():
 def game():
 	screen.fill((200, 200, 255))
 
-	scroll[0] += 0.5
-
 	level.render()
 
 	player.update()
 	# pygame.sprite.RenderPlain((player)).draw(screen)
 
+	# Later during optimization phase fix jittering perhaps (more noticable at lower camera speeds)
 	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 15
 	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 15
 

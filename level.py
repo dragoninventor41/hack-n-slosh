@@ -21,7 +21,7 @@ class Level:
 					tile = self.level.get_tile_image_by_gid(gid)
 					tile = pygame.transform.scale(tile, (TILE_SIZE, TILE_SIZE))
 
-					screen.blit(tile, (x * TILE_SIZE - int(scroll[0]), y * TILE_SIZE - int(scroll[1])))
+					screen.blit(tile, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
 
 					self.tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
 
