@@ -18,7 +18,7 @@ class Level:
 		for layer in self.level.visible_layers:
 			for x, y, gid in layer:
 				if gid > 0:
-					tile = self.level.get_tile_image_by_gid(gid)
+					tile = self.level.get_tile_image_by_gid(gid).convert()
 					tile = pygame.transform.scale(tile, (TILE_SIZE, TILE_SIZE))
 
 					screen.blit(tile, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))

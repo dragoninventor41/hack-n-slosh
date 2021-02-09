@@ -97,10 +97,8 @@ class Player(): # (pygame.sprite.Sprite)
 		else:
 			self.air_timer += 1
 
-		if self.mana < self.max_mana:
-			self.mana += 0.01
-
-		print(self.mana)
+		# if self.mana < self.max_mana:
+			# self.mana += 0.01
 
 	def move(self, rect, movement, tiles):
 		collision_types = {

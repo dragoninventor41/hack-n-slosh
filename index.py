@@ -4,9 +4,7 @@ from level import Level, level_1
 from scaling import screenPercent
 from player import Player
 from player_classes import Assassin
-from globals import clock, FPS, screen, default_font, WHITE, BLACK, scroll, WINDOW_SIZE
-
-import math
+from globals import clock, FPS, screen, default_font, WHITE, BLACK, scroll
 
 pygame.init()
 
@@ -60,4 +58,6 @@ while True:
 		break
 
 	clock.tick(FPS)
+	print(f'FPS: {int(clock.get_fps())}')
+
 	pygame.display.update()
