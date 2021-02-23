@@ -25,8 +25,11 @@ class Player(): # (pygame.sprite.Sprite)
 
 		self.air_timer = 0
 
-		self.mana = 100
+		self.max_health = 100
+		self.health = self.max_health
+
 		self.max_mana = 100
+		self.mana = self.max_mana
 
 		self.player_movement = [0, 0]
 
@@ -38,36 +41,33 @@ class Player(): # (pygame.sprite.Sprite)
 
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
+			# Left and Right Controls
 			if event.key == pygame.K_LEFT or event.key == pygame.K_a:
 				self.moving_left = True
 				self.player_x_momentum = -self.player_speed
+
 			if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
 				self.moving_right = True
 				self.player_x_momentum = self.player_speed
 
-			if event.key == pygame.K_LSHIFT:
-				self.player_speed = 18
-				self.dash = True
-				self.mana -= 5
-
+			# Double Jump
 			if event.key == pygame.K_SPACE or event.key == pygame.K_UP or event.key == pygame.K_w:
 				if self.air_timer < 6:
 					self.player_y_momentum = -12
 				elif self.double_jump < 1:
-					self.double_jump = 1
-					self.player_y_momentum = -12
+					if self.mana >= 5:
+						self.double_jump = 1
+						self.player_y_momentum = -15
+						self.mana -= 5
 
 		if event.type == pygame.KEYUP:
+			# Left or Right Release
 			if event.key == pygame.K_LEFT or event.key == pygame.K_a:
 				self.moving_left = False
 				self.player_x_momentum = self.player_speed
 			if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
 				self.moving_right = False
 				self.player_x_momentum = -self.player_speed
-
-			if event.key == pygame.K_LSHIFT:
-				self.dash = False
-				self.player_speed = 8
 
 
 	def update(self):
@@ -97,8 +97,8 @@ class Player(): # (pygame.sprite.Sprite)
 		else:
 			self.air_timer += 1
 
-		# if self.mana < self.max_mana:
-			# self.mana += 0.01
+		if self.mana < self.max_mana:
+			self.mana += 0.04
 
 	def move(self, rect, movement, tiles):
 		collision_types = {

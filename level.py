@@ -3,6 +3,7 @@ import pytmx
 from globals import path, screen, scroll
 
 TILE_SIZE = 64
+CHUNK_SIZE = 8
 
 level_1 = pytmx.load_pygame(f'{path}/level_1.tmx')
 
@@ -10,11 +11,14 @@ class Level:
 	def __init__(self, level):
 		self.level = level
 		self.tile_rects = []
-		self.offset = [0, 0]
+		self.chunk_data = []
 
-	def render(self):
-		self.tile_rects = []
+		for layer in self.level.visible_layers:
+			for x, y, gid in layer:
+				if gid > 0:
+					self.tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
 
+	def update(self):
 		for layer in self.level.visible_layers:
 			for x, y, gid in layer:
 				if gid > 0:
@@ -22,8 +26,6 @@ class Level:
 					tile = pygame.transform.scale(tile, (TILE_SIZE, TILE_SIZE))
 
 					screen.blit(tile, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
-
-					self.tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
 
 	def collision_test(self, rect, tiles):
 		hit_list = []
