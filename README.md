@@ -9,3 +9,5 @@
 * Music system
 * Spritesheet loading and animations functionality
 * Custom spritesheets for characters, enemies, and tiles
+* Fix white line rendering error
+* Optimise rendering code to only blit needed tiles
