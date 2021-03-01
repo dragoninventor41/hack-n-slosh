@@ -37,7 +37,7 @@ class Player(): # (pygame.sprite.Sprite)
 		self.player_dash_speed = 18
 
 		self.dash = False
-		self.double_jump = 0
+		self.double_jump = 1000 # Normally 1, 1000 for testing purposes
 
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
@@ -54,9 +54,9 @@ class Player(): # (pygame.sprite.Sprite)
 			if event.key == pygame.K_SPACE or event.key == pygame.K_UP or event.key == pygame.K_w:
 				if self.air_timer < 6:
 					self.player_y_momentum = -12
-				elif self.double_jump < 1:
+				elif self.double_jump > 0:
 					if self.mana >= 5:
-						self.double_jump = 1
+						self.double_jump -= 1
 						self.player_y_momentum = -15
 						self.mana -= 5
 
@@ -91,7 +91,7 @@ class Player(): # (pygame.sprite.Sprite)
 		if collisions['bottom']:
 			self.player_y_momentum = 0
 			self.air_timer = 0
-			self.double_jump = 0
+			# self.double_jump = 0 Removed temperarily for testing purposes
 		elif collisions['top']:
 			self.player_y_momentum = 0
 		else:

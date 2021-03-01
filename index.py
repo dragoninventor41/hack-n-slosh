@@ -4,15 +4,14 @@ from level import Level, level_1
 from scaling import screenPercent
 from player import Player
 from player_classes import Assassin
-from globals import clock, FPS, screen, default_font, WHITE, BLACK, scroll, stat_bar, path
+from globals import clock, FPS, screen, WHITE, BLACK, scroll, stat_bar, path, SCENE, start_menu_title_font
+from button import StartMenuButton
+
 
 pygame.init()
 
 # Title
 pygame.display.set_caption("Hack-n-slosh")
-
-# Scene
-SCENE = "game"
 
 # Sets level
 level = Level(level_1)
@@ -23,11 +22,22 @@ player = Player(Assassin(), level)
 # Scene Functions
 def start_menu():
 	screen.fill(BLACK)
-	text = default_font.render("Hack-N-Slosh", True, WHITE)
-	screen.blit(text, (screenPercent('x', 50, text.get_width()), screenPercent('y', 15, text.get_height())))
+
+	title = start_menu_title_font.render("Hack-N-Slosh", True, WHITE)
+	screen.blit(title, (screenPercent('x', 50, title.get_width()), screenPercent('y', 15, title.get_height())))
+
+	play_button = StartMenuButton("Play", ((20, 20), (100, 40)), "game")
+
+	play_button.render()
+
+	# def singleplayer():
+	# 	BabButton = StartMenuButton("Bab", ((20, 20), (100, 40)), "start_menu")
+
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			sys.exit()
+
+		play_button.get_event(event)
 
 def game():
 	screen.fill((200, 200, 255))
@@ -55,13 +65,17 @@ def game():
 while True:
 	if SCENE == "start_menu":
 		start_menu()
+	# if SCENE == "start_menu_singleplayer":
+	# 	start_menu().start_menu_singleplayer()
 	elif SCENE == "game":
 		game()
 	else:
-		print(f"Invalid scene:\nscene = {SCENE}")
+		print(f"Invalid scene:\nSCENE = {SCENE}")
 		break
 
 	clock.tick(FPS)
 	# print(f'FPS: {int(clock.get_fps())}')
+
+	print(SCENE)
 
 	pygame.display.update()
