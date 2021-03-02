@@ -4,7 +4,7 @@ from level import Level, level_1
 from scaling import screenPercent
 from player import Player
 from player_classes import Mage
-from globals import clock, FPS, screen, WHITE, BLACK, scroll, stat_bar, path, start_menu_title_font, scene_manager
+from globals import clock, FPS, screen, WHITE, BLACK, scroll, stat_bar, path, start_menu_title_font, scene_manager, WINDOW_SIZE
 from button import StartMenuButton
 
 
@@ -52,8 +52,10 @@ def game():
 	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 15
 	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 15
 
-	stat_bar(20, 20, 4, player.health, player.max_health, f'{path}/assets/stat_bar/health') # Health Bar
-	stat_bar(20, 72, 4, player.mana, player.max_mana, f'{path}/assets/stat_bar/mana') # Mana Bar
+	stat_bars_surface = screen.subsurface((screenPercent('x', 50, WINDOW_SIZE[0]), WINDOW_SIZE[1] - 48), (WINDOW_SIZE[0], 48))
+
+	stat_bar(stat_bars_surface, screenPercent('x', 25), 0, 4, player.health, player.max_health, f'{path}/assets/stat_bar/health') # Health Bar
+	stat_bar(stat_bars_surface, screenPercent('x', 50), 0, 4, player.mana, player.max_mana, f'{path}/assets/stat_bar/mana') # Mana Bar
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:

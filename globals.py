@@ -30,7 +30,7 @@ scene_manager = SceneManager('start_menu')
 # Scroll
 scroll = [0, 0]
 
-def stat_bar(x, y, scale, current_value, max_value, images_path):
+def stat_bar(surface, x, y, scale, current_value, max_value, images_path):
 	bar_empty = pygame.image.load(f'{images_path}/bar_empty.png').convert_alpha()
 	bar_empty = pygame.transform.scale(bar_empty, (bar_empty.get_width() * scale, bar_empty.get_height() * scale))
 
@@ -42,7 +42,7 @@ def stat_bar(x, y, scale, current_value, max_value, images_path):
 
 	width = stat_icon.get_width() + bar_empty.get_width() - int(7 * scale)
 
-	cropped_surface = screen.subsurface((x + int(7 * scale), y + (stat_icon.get_height() / 2) - (bar_percentage.get_height() / 2), bar_empty.get_width(), bar_empty.get_height()))
+	cropped_surface = surface.subsurface((x + int(7 * scale), y + (stat_icon.get_height() / 2) - (bar_percentage.get_height() / 2), bar_empty.get_width(), bar_empty.get_height()))
 
 	percentage = (current_value / max_value) * 100
 	percentage_missing = 100 - percentage
@@ -52,6 +52,6 @@ def stat_bar(x, y, scale, current_value, max_value, images_path):
 
 	cropped_surface.blit(bar_empty, (0, 0)) # Empty bar
 	cropped_surface.blit(bar_percentage, (0 - percentage_offset, 0)) # Progress bar
-	screen.blit(stat_icon, (x, y)) # Stat icon
+	surface.blit(stat_icon, (x, y)) # Stat icon
 
-	screen.blit(text, (x + width / 2, y + 14)) # Text
+	surface.blit(text, (x + width / 2, y + 14)) # Text
