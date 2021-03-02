@@ -3,8 +3,8 @@ import pygame
 from level import Level, level_1
 from scaling import screenPercent
 from player import Player
-from player_classes import Assassin
-from globals import clock, FPS, screen, WHITE, BLACK, scroll, stat_bar, path, SCENE, start_menu_title_font
+from player_classes import Mage
+from globals import clock, FPS, screen, WHITE, BLACK, scroll, stat_bar, path, start_menu_title_font, scene_manager
 from button import StartMenuButton
 
 
@@ -17,7 +17,7 @@ pygame.display.set_caption("Hack-n-slosh")
 level = Level(level_1)
 
 # Sets player class
-player = Player(Assassin(), level)
+player = Player(Mage(), level)
 
 # Scene Functions
 def start_menu():
@@ -26,18 +26,18 @@ def start_menu():
 	title = start_menu_title_font.render("Hack-N-Slosh", True, WHITE)
 	screen.blit(title, (screenPercent('x', 50, title.get_width()), screenPercent('y', 15, title.get_height())))
 
-	play_button = StartMenuButton("Play", ((20, 20), (100, 40)), "game")
+	singleplayer_button = StartMenuButton("Singleplayer", ((screenPercent('x', 50, 400), screenPercent('y', 50)), (400, 48)), "game")
+	multiplayer_button = StartMenuButton("Multiplayer", ((screenPercent('x', 50, 400), screenPercent('y', 70)), (400, 48)), "game")
 
-	play_button.render()
-
-	# def singleplayer():
-	# 	BabButton = StartMenuButton("Bab", ((20, 20), (100, 40)), "start_menu")
+	singleplayer_button.render()
+	multiplayer_button.render()
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			sys.exit()
 
-		play_button.get_event(event)
+		singleplayer_button.get_event(event)
+		multiplayer_button.get_event(event)
 
 def game():
 	screen.fill((200, 200, 255))
@@ -63,11 +63,11 @@ def game():
 
 # Game loop
 while True:
-	if SCENE == "start_menu":
+	if scene_manager.scene == "start_menu":
 		start_menu()
 	# if SCENE == "start_menu_singleplayer":
 	# 	start_menu().start_menu_singleplayer()
-	elif SCENE == "game":
+	elif scene_manager.scene == "game":
 		game()
 	else:
 		print(f"Invalid scene:\nSCENE = {SCENE}")
@@ -75,7 +75,5 @@ while True:
 
 	clock.tick(FPS)
 	# print(f'FPS: {int(clock.get_fps())}')
-
-	print(SCENE)
 
 	pygame.display.update()

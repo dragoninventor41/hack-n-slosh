@@ -10,7 +10,7 @@ class Player(): # (pygame.sprite.Sprite)
 		self.level = level
 
 		self.image = self.player_class.idle_sprite
-		self.image = pygame.transform.scale(self.image, (64, 64))
+		self.image = pygame.transform.scale(self.image, (52*2, 56*2))
 
 		self.rect = self.image.get_rect()
 

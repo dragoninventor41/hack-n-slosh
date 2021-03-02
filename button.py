@@ -1,5 +1,5 @@
 import pygame
-from globals import start_menu_button_font, WHITE, SCENE, screen
+from globals import start_menu_button_font, WHITE, screen, scene_manager
 
 class StartMenuButton:
 	def __init__(self, button_name, rect, on_click_scene):
@@ -10,11 +10,12 @@ class StartMenuButton:
 	def render(self):
 		display_name = start_menu_button_font.render(self.button_name, True, WHITE)
 
-		screen.blit(display_name, (self.rect.x, self.rect.y))
+		pygame.draw.rect(screen, (20, 20, 20), self.rect)
+		screen.blit(display_name, (self.rect.x + display_name.get_width()/2, self.rect.y))
 
 	def get_event(self, event):
 		if event.type == pygame.MOUSEBUTTONUP:
 			pos = pygame.mouse.get_pos()
 
 			if self.rect.collidepoint(pos):
-				SCENE = "game"
+				scene_manager.change_scene('game')
