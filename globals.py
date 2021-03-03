@@ -25,7 +25,7 @@ start_menu_button_font = pygame.font.Font(f'{path}/fonts/retro_gaming.ttf', 24)
 default_font = pygame.font.Font(f'{path}/fonts/retro_gaming.ttf', 16)
 
 # Scene Manager
-scene_manager = SceneManager('start_menu')
+scene_manager = SceneManager('game')
 
 # Scroll
 scroll = [0, 0]

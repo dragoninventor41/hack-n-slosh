@@ -24,10 +24,10 @@ def start_menu():
 	screen.fill(BLACK)
 
 	title = start_menu_title_font.render("Hack-N-Slosh", True, WHITE)
-	screen.blit(title, (screenPercent('x', 50, title.get_width()), screenPercent('y', 15, title.get_height())))
+	screen.blit(title, (screenPercent('x', 50, title.get_width(), 'center'), screenPercent('y', 15, title.get_height(), 'center')))
 
-	singleplayer_button = StartMenuButton("Singleplayer", ((screenPercent('x', 50, 400), screenPercent('y', 50)), (400, 48)), "game")
-	multiplayer_button = StartMenuButton("Multiplayer", ((screenPercent('x', 50, 400), screenPercent('y', 70)), (400, 48)), "game")
+	singleplayer_button = StartMenuButton("Singleplayer", ((screenPercent('x', 50, 400, 'center'), screenPercent('y', 50, 48, 'center')), (400, 48)), "game")
+	multiplayer_button = StartMenuButton("Multiplayer", ((screenPercent('x', 50, 400, 'center'), screenPercent('y', 70, 48, 'center')), (400, 48)), "game")
 
 	singleplayer_button.render()
 	multiplayer_button.render()
@@ -52,10 +52,10 @@ def game():
 	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 15
 	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 15
 
-	stat_bars_surface = screen.subsurface((screenPercent('x', 50, WINDOW_SIZE[0]), WINDOW_SIZE[1] - 48), (WINDOW_SIZE[0], 48))
+	stat_bars_surface = screen.subsurface((screenPercent('x', 50, WINDOW_SIZE[0]), WINDOW_SIZE[1] - 64), (WINDOW_SIZE[0], 48))
 
-	stat_bar(stat_bars_surface, screenPercent('x', 25), 0, 4, player.health, player.max_health, f'{path}/assets/stat_bar/health') # Health Bar
-	stat_bar(stat_bars_surface, screenPercent('x', 50), 0, 4, player.mana, player.max_mana, f'{path}/assets/stat_bar/mana') # Mana Bar
+	stat_bar(stat_bars_surface, screenPercent('x', 45, 128*4, 'right'), 0, 4, player.stats["health"]["current"], player.stats["health"]["max"], f'{path}/assets/stat_bar/health') # Health Bar
+	stat_bar(stat_bars_surface, screenPercent('x', 55, 128*4, 'left'), 0, 4, player.stats["mana"]["current"], player.stats["mana"]["max"], f'{path}/assets/stat_bar/mana') # Mana Bar
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:

@@ -9,14 +9,18 @@ class Player(): # (pygame.sprite.Sprite)
 
 		self.level = level
 
+		# Image
 		self.image = self.player_class.idle_sprite
 		self.image = pygame.transform.scale(self.image, (52*2, 56*2))
 
+		# Rect
 		self.rect = self.image.get_rect()
 
+		# Rect Position
 		self.rect.x = 100 + scroll[0]
 		self.rect.y = 100 + scroll[0]
 
+		# Movement
 		self.moving_right = False
 		self.moving_left = False
 
@@ -25,12 +29,6 @@ class Player(): # (pygame.sprite.Sprite)
 
 		self.air_timer = 0
 
-		self.max_health = 100
-		self.health = self.max_health
-
-		self.max_mana = 100
-		self.mana = self.max_mana
-
 		self.player_movement = [0, 0]
 
 		self.player_speed = 8
@@ -38,6 +36,46 @@ class Player(): # (pygame.sprite.Sprite)
 
 		self.dash = False
 		self.double_jump = 1000 # Normally 1, 1000 for testing purposes
+
+		# Stats
+		# self.max_health = 100
+		# self.health = self.max_health
+
+		# self.max_mana = 100
+		# self.mana = self.max_mana
+
+		# Max defence percentage: 85
+
+		self.stat_upgrades = {
+			"defence": 10,
+			"intelligence": 8,
+			"agility": 0,
+			"strength": 0,
+			"crit damage": 0,
+			"crit chance": 0,
+			"speed": 8
+		}
+
+		self.stats = {
+			"health": {
+				"max": 100,
+				"current": 100,
+				"regeration": 100
+			},
+			"mana": {
+				"max": 100 * ((self.stat_upgrades["intelligence"] / 100) * 4 + 1),
+				"current": 100,
+				"regeration": 100 * ((self.stat_upgrades["intelligence"] / 100) * 4 + 1)
+			},
+			"defence": self.stat_upgrades["defence"] / 100,
+			"agility": 0,
+			"strength": 0,
+			"crit damage": 120,
+			"crit chance": 15,
+			"speed": 100
+		}
+
+		print(self.stats["defence"])
 
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
@@ -55,10 +93,10 @@ class Player(): # (pygame.sprite.Sprite)
 				if self.air_timer < 6:
 					self.player_y_momentum = -12
 				elif self.double_jump > 0:
-					if self.mana >= 5:
+					if self.stats["mana"]["current"] >= 5:
 						self.double_jump -= 1
 						self.player_y_momentum = -15
-						self.mana -= 5
+						self.stats["mana"]["current"] -= 5
 
 		if event.type == pygame.KEYUP:
 			# Left or Right Release
@@ -68,7 +106,6 @@ class Player(): # (pygame.sprite.Sprite)
 			if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
 				self.moving_right = False
 				self.player_x_momentum = -self.player_speed
-
 
 	def update(self):
 		# pygame.sprite.Sprite.update(self)
@@ -97,8 +134,8 @@ class Player(): # (pygame.sprite.Sprite)
 		else:
 			self.air_timer += 1
 
-		if self.mana < self.max_mana:
-			self.mana += 0.04
+		if self.stats["mana"]["current"] < self.stats["mana"]["max"]:
+			self.stats["mana"]["current"] += 0.04 * (self.stats["mana"]["regeration"] / 100)
 
 	def move(self, rect, movement, tiles):
 		collision_types = {
@@ -131,3 +168,6 @@ class Player(): # (pygame.sprite.Sprite)
 				rect.y += movement[1]
 
 		return rect, collision_types
+
+	def update_stats(self):
+		pass
