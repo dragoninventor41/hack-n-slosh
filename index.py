@@ -13,6 +13,9 @@ pygame.init()
 # Title
 pygame.display.set_caption("Hack-n-slosh")
 
+# Background
+background = pygame.Rect(0, 0, WINDOW_SIZE[0], WINDOW_SIZE[1])
+
 # Sets level
 level = Level(level_1)
 
@@ -40,7 +43,7 @@ def start_menu():
 		multiplayer_button.get_event(event)
 
 def game():
-	screen.fill((200, 200, 255))
+	# screen.fill((200, 200, 255))
 
 	# level.render()
 	level.update()
@@ -49,8 +52,20 @@ def game():
 	# pygame.sprite.RenderPlain((player)).draw(screen)
 
 	# Later during optimization phase fix jittering perhaps (more noticable at lower camera speeds)
-	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 15
-	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 15
+	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 10
+	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 10
+
+	# Scroll lock prevents scroll's x values from allowing view to see beyond map
+	if scroll[0] <= 0:
+		scroll[0] = 0
+	if scroll[0] >= level.level.tilewidth * 4 * level.level.width - WINDOW_SIZE[0]:
+		scroll[0] = level.level.tilewidth * 4 * level.level.width - WINDOW_SIZE[0]
+
+	# Player x lock prevents player from falling off the sides of the map through the x value
+	if player.rect.x <= 0:
+		player.rect.x = 0
+	if player.rect.x >= level.level.tilewidth * 4 * level.level.width - player.rect.width:
+		player.rect.x = level.level.tilewidth * 4 * level.level.width - player.rect.width
 
 	stat_bars_surface = screen.subsurface((screenPercent('x', 50, WINDOW_SIZE[0]), WINDOW_SIZE[1] - 64), (WINDOW_SIZE[0], 48))
 
@@ -65,17 +80,16 @@ def game():
 
 # Game loop
 while True:
+	pygame.draw.rect(screen, (200, 200, 255), (background))
+
 	if scene_manager.scene == "start_menu":
 		start_menu()
-	# if SCENE == "start_menu_singleplayer":
-	# 	start_menu().start_menu_singleplayer()
 	elif scene_manager.scene == "game":
 		game()
 	else:
-		print(f"Invalid scene:\nSCENE = {SCENE}")
+		print(f"Invalid scene:\nSCENE = {scene_manager.scene}")
 		break
 
 	clock.tick(FPS)
-	# print(f'FPS: {int(clock.get_fps())}')
 
-	pygame.display.update()
+	pygame.display.flip()

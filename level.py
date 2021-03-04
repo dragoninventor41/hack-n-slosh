@@ -20,23 +20,6 @@ class Level:
 				self.chunk_data = []
 				if gid > 0:
 					self.tile_rects.append(pygame.Rect(tile_x * TILE_SIZE, tile_y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
-					# print(tile_x, tile_y)
-
-					# if len(self.chunk_data) >= 8:
-					# 	self.chunk_data.append([[tile_x, tile_y], gid])
-					# 	game_map.append(self.chunk_data)
-					# 	self.chunk_data = []
-
-			# for chunk_tile_x in range(CHUNK_SIZE):
-			# 	for chunk_tile_y in range(CHUNK_SIZE):
-			# 		target_x = x * CHUNK_SIZE + x_pos
-			# 		target_y = y * CHUNK_SIZE + y_pos
-			# for tile_x in range(CHUNK_SIZE):
-			# 	for tile_y in range(CHUNK_SIZE):
-			# 		target_x = x * CHUNK_SIZE + tile_x
-			# 		target_y = y * CHUNK_SIZE + tile_y
-
-
 
 
 	def update(self):

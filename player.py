@@ -1,9 +1,9 @@
 import pygame
 from globals import scroll, screen
 
-class Player(): # (pygame.sprite.Sprite)
+class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 	def __init__(self, player_class, level):
-		# pygame.sprite.Sprite.__init__(self)
+		pygame.sprite.Sprite.__init__(self)
 
 		self.player_class = player_class
 
@@ -48,7 +48,7 @@ class Player(): # (pygame.sprite.Sprite)
 
 		self.stat_upgrades = {
 			"defence": 10,
-			"intelligence": 8,
+			"intelligence": 45,
 			"agility": 0,
 			"strength": 0,
 			"crit damage": 0,
@@ -75,7 +75,7 @@ class Player(): # (pygame.sprite.Sprite)
 			"speed": 100
 		}
 
-		print(self.stats["defence"])
+		# print(self.stats["defence"])
 
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:
