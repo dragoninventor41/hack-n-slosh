@@ -1,4 +1,4 @@
-from globals import *
+from globals import screen
 
 def screenPercent(x_or_y, percentage, length=None, origin='center'):
 
