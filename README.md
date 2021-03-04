@@ -3,7 +3,7 @@
 
 ## Todo
 * Player left and right acceleration
-* Disallow camera to move past level bounds
+* Disallow camera to move past y level bounds
 * Ramp physics
 * Rewrite player class to render/function as a sprite like it was before camera update
 * Music system
