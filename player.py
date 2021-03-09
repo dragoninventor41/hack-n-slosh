@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		# Image
 		self.image = self.player_class.idle_sprite
-		self.image = pygame.transform.scale(self.image, (52*2, 56*2))
+		self.image = pygame.transform.scale(self.image, (24*4, 32*4))
 
 		# Rect
 		self.rect = self.image.get_rect()
@@ -44,16 +44,16 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 		# self.max_mana = 100
 		# self.mana = self.max_mana
 
-		# Max defence percentage: 85
+		# Max defence percentage: 90
 
 		self.stat_upgrades = {
 			"defence": 10,
-			"intelligence": 45,
+			"intelligence": 10,
 			"agility": 0,
 			"strength": 0,
 			"crit damage": 0,
 			"crit chance": 0,
-			"speed": 8
+			"speed": 10
 		}
 
 		self.stats = {

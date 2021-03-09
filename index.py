@@ -69,8 +69,8 @@ def game():
 
 	stat_bars_surface = screen.subsurface((screenPercent('x', 50, WINDOW_SIZE[0]), WINDOW_SIZE[1] - 64), (WINDOW_SIZE[0], 48))
 
-	stat_bar(stat_bars_surface, screenPercent('x', 45, 128*4, 'right'), 0, 4, player.stats["health"]["current"], player.stats["health"]["max"], f'{path}/assets/stat_bar/health') # Health Bar
-	stat_bar(stat_bars_surface, screenPercent('x', 55, 128*4, 'left'), 0, 4, player.stats["mana"]["current"], player.stats["mana"]["max"], f'{path}/assets/stat_bar/mana') # Mana Bar
+	stat_bar(stat_bars_surface, screenPercent('x', 45, 128*4, 'right'), 0, 4, player.stats["health"]["current"], player.stats["health"]["max"], f'{path}/assets/images/stat_bars/health') # Health Bar
+	stat_bar(stat_bars_surface, screenPercent('x', 55, 128*4, 'left'), 0, 4, player.stats["mana"]["current"], player.stats["mana"]["max"], f'{path}/assets/images/stat_bars/mana') # Mana Bar
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
