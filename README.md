@@ -8,7 +8,7 @@
 * Music system
 * Spritesheet loading and animations functionality
 * Custom spritesheets for characters, enemies, and tiles
-* Optimise overall game rendering
+* Optimize overall game rendering
 * Finish start menu functionality
 * Multiplayer functionality
 * Pause menu
