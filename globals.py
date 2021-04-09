@@ -9,9 +9,10 @@ path = os.path.dirname(os.path.abspath(__file__))
 clock = pygame.time.Clock()
 FPS = 60
 WINDOW_SIZE = (1280, 800)
+SCALE = 4
 
 # Pygame displays
-screen = pygame.display.set_mode(WINDOW_SIZE)
+screen = pygame.display.set_mode(WINDOW_SIZE, pygame.RESIZABLE)
 
 # Colors
 WHITE = (255, 255, 255)

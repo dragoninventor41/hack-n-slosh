@@ -37,15 +37,6 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 		self.dash = False
 		self.double_jump = 1000 # Normally 1, 1000 for testing purposes
 
-		# Stats
-		# self.max_health = 100
-		# self.health = self.max_health
-
-		# self.max_mana = 100
-		# self.mana = self.max_mana
-
-		# Max defence percentage: 90
-
 		self.stat_upgrades = {
 			"defence": 10,
 			"intelligence": 10,
@@ -75,7 +66,6 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 			"speed": 100
 		}
 
-		# print(self.stats["defence"])
 
 	def get_event(self, event):
 		if event.type == pygame.KEYDOWN:

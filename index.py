@@ -1,12 +1,13 @@
 import sys
 import pygame
 from level import Level, level_1
-from scaling import screenPercent
+from scaling import screen_percent
 from player import Player
 from player_classes import Mage
 from globals import clock, FPS, screen, WHITE, BLACK, scroll, stat_bar, path, start_menu_title_font, scene_manager, WINDOW_SIZE
 from button import StartMenuButton
-
+from menus import class_selection_menu
+from mob import Mob
 
 pygame.init()
 
@@ -22,36 +23,28 @@ level = Level(level_1)
 # Sets player class
 player = Player(Mage(), level)
 
+# Slime
+slime = Mob(level, player, f'{path}/assets/images/mobs/slime.png', 20, 5, 4)
+
 # Scene Functions
 def start_menu():
 	screen.fill(BLACK)
 
 	title = start_menu_title_font.render("Hack-N-Slosh", True, WHITE)
-	screen.blit(title, (screenPercent('x', 50, title.get_width(), 'center'), screenPercent('y', 15, title.get_height(), 'center')))
-
-	singleplayer_button = StartMenuButton("Singleplayer", ((screenPercent('x', 50, 400, 'center'), screenPercent('y', 50, 48, 'center')), (400, 48)), "game")
-	multiplayer_button = StartMenuButton("Multiplayer", ((screenPercent('x', 50, 400, 'center'), screenPercent('y', 70, 48, 'center')), (400, 48)), "game")
-
-	singleplayer_button.render()
-	multiplayer_button.render()
+	class_selection_menu()
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			sys.exit()
 
-		singleplayer_button.get_event(event)
-		multiplayer_button.get_event(event)
 
 def game():
-	# screen.fill((200, 200, 255))
-
-	# level.render()
 	level.update()
 
 	player.update()
-	# pygame.sprite.RenderPlain((player)).draw(screen)
 
-	# Later during optimization phase fix jittering perhaps (more noticable at lower camera speeds)
+	slime.update()
+
 	scroll[0] += (player.rect.x - scroll[0] - (640 - 32)) / 10
 	scroll[1] += (player.rect.y - scroll[1] - (400 - 32)) / 10
 
@@ -67,10 +60,10 @@ def game():
 	if player.rect.x >= level.level.tilewidth * 4 * level.level.width - player.rect.width:
 		player.rect.x = level.level.tilewidth * 4 * level.level.width - player.rect.width
 
-	stat_bars_surface = screen.subsurface((screenPercent('x', 50, WINDOW_SIZE[0]), WINDOW_SIZE[1] - 64), (WINDOW_SIZE[0], 48))
+	stat_bars_surface = screen.subsurface((screen_percent('x', 50, WINDOW_SIZE[0]), WINDOW_SIZE[1] - 64), (WINDOW_SIZE[0], 48))
 
-	stat_bar(stat_bars_surface, screenPercent('x', 45, 128*4, 'right'), 0, 4, player.stats["health"]["current"], player.stats["health"]["max"], f'{path}/assets/images/stat_bars/health') # Health Bar
-	stat_bar(stat_bars_surface, screenPercent('x', 55, 128*4, 'left'), 0, 4, player.stats["mana"]["current"], player.stats["mana"]["max"], f'{path}/assets/images/stat_bars/mana') # Mana Bar
+	stat_bar(stat_bars_surface, screen_percent('x', 45, 128*4, 'right'), 0, 4, player.stats["health"]["current"], player.stats["health"]["max"], f'{path}/assets/images/stat_bars/health') # Health Bar
+	stat_bar(stat_bars_surface, screen_percent('x', 55, 128*4, 'left'), 0, 4, player.stats["mana"]["current"], player.stats["mana"]["max"], f'{path}/assets/images/stat_bars/mana') # Mana Bar
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
