@@ -1,8 +1,7 @@
 import pygame
-from globals import screen, scroll
 
 class Mob(pygame.sprite.Sprite):
-	def __init__(self, level, player, image, health, damage, speed):
+	def __init__(self, screen, level, player, image, health, damage, speed):
 		pygame.sprite.Sprite.__init__(self)
 
 		self.level = level
@@ -11,12 +10,11 @@ class Mob(pygame.sprite.Sprite):
 		self.damage = damage
 
 		self.image = pygame.image.load(image)
-		self.image = pygame.transform.scale(self.image, (16*4, 16*4))
 
 		self.rect = self.image.get_rect()
 
-		self.rect.x = 400 + scroll[0]
-		self.rect.y = 100 + scroll[0]
+		self.rect.x = 400
+		self.rect.y = 100
 
 		self.speed = speed
 
@@ -27,6 +25,9 @@ class Mob(pygame.sprite.Sprite):
 
 		# self.player_coords = [player.rect.x, player.rect.y]
 
+	def attack(self):
+		pass
+
 	def follow(self):
 		if self.player.rect.x > self.rect.x:
 			self.mob_movement[0] = self.speed
@@ -35,20 +36,26 @@ class Mob(pygame.sprite.Sprite):
 		else:
 			self.mob_movement[0] = 0
 
-		if self.player.rect.y + self.player.rect.height <= self.rect.y + self.rect.height:
-			self.mob_movement[1] = -1
-		else:
-			self.mob_y_momentum += 0.01
-			self.mob_movement[1] += self.mob_y_momentum
+		# IF BOTTOM OF PLAYER <= BOTTOM OF SLIME
+		# if self.player.rect.y + self.player.rect.height <= self.rect.y + self.rect.height:
+			# self.mob_y_momentum = -5
+		# else:
+		# 	self.mob_y_momentum += 0.01
+			# self.mob_movement[1] += self.mob_y_momentum
 
-		if self.mob_y_momentum > 1:
-			self.mob_y_momentum = 1
+		# if self.mob_y_momentum > 1:
+		# 	self.mob_y_momentum = 1
 
 
 
 	def update(self):
-		# screen.blit(self.image, (300, 50))
-		screen.blit(self.image, (self.rect.x - scroll[0], self.rect.y - scroll[1]))
+		pygame.sprite.Sprite.update(self)
+
+		self.mob_y_momentum += 0.2
+		self.mob_movement[1] += self.mob_y_momentum
+
+		if self.mob_y_momentum > 1:
+			self.mob_y_momentum = 1
 
 		self.rect, collisions = self.move(self.rect, self.mob_movement, self.level.tile_rects)
 
@@ -59,8 +66,8 @@ class Mob(pygame.sprite.Sprite):
 
 		self.follow()
 
-		if self.rect.colliderect(self.player.rect):
-			self.player.stats['health']['current'] -= 1
+		# if self.rect.colliderect(self.player.rect):
+			# self.player.stats['health']['current'] -= 1
 
 	def move(self, rect, movement, tiles):
 		collision_types = {
