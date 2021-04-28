@@ -25,6 +25,11 @@ class Mob(pygame.sprite.Sprite):
 
 		# self.player_coords = [player.rect.x, player.rect.y]
 
+	def control(self, x, y):
+
+		self.mob_movement[0] += x
+		self.mob_movement[1] += y
+
 	def attack(self):
 		pass
 
@@ -50,21 +55,29 @@ class Mob(pygame.sprite.Sprite):
 
 	def update(self):
 		pygame.sprite.Sprite.update(self)
+		self.rect.x = self.rect.x + self.mob_movement[0]
+		self.rect.y = self.rect.y + self.mob_movement[1]
 
-		self.mob_y_momentum += 0.2
-		self.mob_movement[1] += self.mob_y_momentum
+		if self.mob_movement[0] < 0:
+			self.frame 
 
-		if self.mob_y_momentum > 1:
-			self.mob_y_momentum = 1
+		
 
-		self.rect, collisions = self.move(self.rect, self.mob_movement, self.level.tile_rects)
 
-		if collisions['bottom']:
-			self.mob_y_momentum = 0
-		elif collisions['top']:
-			self.mob_y_momentum = 0
+		# self.mob_y_momentum += 0.2
+		# self.mob_movement[1] += self.mob_y_momentum
 
-		self.follow()
+		# if self.mob_y_momentum >= 1:
+		# 	self.mob_y_momentum = 1
+
+		# self.rect, collisions = self.move(self.rect, self.mob_movement, self.level.tile_rects)
+
+		# if collisions['bottom']:
+		# 	self.mob_y_momentum = 0
+		# elif collisions['top']:
+		# 	self.mob_y_momentum = 0
+
+		# self.follow()
 
 		# if self.rect.colliderect(self.player.rect):
 			# self.player.stats['health']['current'] -= 1
