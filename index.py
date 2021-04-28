@@ -27,7 +27,7 @@ class Game():
 
 		self.player = Player(Mage(), self.level, self.screen)
 
-		# TEMP
+		# TEMP yeet
 		self.slime = Mob(self.screen, self.level, self.player, f'{self.path}/assets/images/mobs/slime.png', 40, 0.5, 0.1)
 
 		map_data = pyscroll.TiledMapData(pytmx.load_pygame(f'{self.path}/level_1.tmx'))
