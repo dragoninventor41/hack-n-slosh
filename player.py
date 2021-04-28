@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		# Image
 		self.image = self.player_class.idle_sprite
-		self.image = pygame.transform.scale(self.image, (24*4, 32*4))
+		# self.image = pygame.transform.scale(self.image, (24*4, 32*4))
 
 		# Rect
 		self.rect = self.image.get_rect()
@@ -98,8 +98,8 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 				self.player_x_momentum = -self.player_speed
 
 	def update(self):
-		# pygame.sprite.Sprite.update(self)
-		screen.blit(self.image, (self.rect.x - scroll[0], self.rect.y - scroll[1]))
+		pygame.sprite.Sprite.update(self)
+		# screen.blit(self.image, (self.rect.x - scroll[0], self.rect.y - scroll[1]))
 
 		self.player_movement = [0, 0]
 
@@ -126,6 +126,8 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		if self.stats["mana"]["current"] < self.stats["mana"]["max"]:
 			self.stats["mana"]["current"] += 0.04 * (self.stats["mana"]["regeration"] / 100)
+
+		# print('yeet')
 
 	def move(self, rect, movement, tiles):
 		collision_types = {
