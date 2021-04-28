@@ -8,7 +8,7 @@ pygame.font.init()
 path = os.path.dirname(os.path.abspath(__file__))
 clock = pygame.time.Clock()
 FPS = 60
-WINDOW_SIZE = (1280, 800)
+WINDOW_SIZE = (1920, 1080)
 SCALE = 4
 
 # Pygame displays

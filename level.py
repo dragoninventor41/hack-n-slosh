@@ -10,15 +10,15 @@ game_map = {}
 level_1 = pytmx.load_pygame(f'{path}/level_1.tmx')
 
 class Level:
-	def __init__(self, level):
-		self.level = level
+	def __init__(self):
+		self.level = level_1
 		self.tile_rects = []
 		self.chunk_data = []
 
 		for layer in self.level.visible_layers:
 			for tile_x, tile_y, gid in layer:
 				self.chunk_data = []
-				if gid > 0:
+				if gid > 1:
 					self.tile_rects.append(pygame.Rect(tile_x * TILE_SIZE, tile_y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
 
 
