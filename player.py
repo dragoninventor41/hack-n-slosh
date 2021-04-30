@@ -1,8 +1,7 @@
 import pygame
-from globals import scroll, screen
 
 class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
-	def __init__(self, player_class, level):
+	def __init__(self, player_class, level, screen):
 		pygame.sprite.Sprite.__init__(self)
 
 		self.player_class = player_class
@@ -11,14 +10,13 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		# Image
 		self.image = self.player_class.idle_sprite
-		self.image = pygame.transform.scale(self.image, (24*4, 32*4))
 
 		# Rect
 		self.rect = self.image.get_rect()
 
 		# Rect Position
-		self.rect.x = 100 + scroll[0]
-		self.rect.y = 100 + scroll[0]
+		self.rect.x = 100
+		self.rect.y = 100
 
 		# Movement
 		self.moving_right = False
@@ -31,7 +29,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		self.player_movement = [0, 0]
 
-		self.player_speed = 8
+		self.player_speed = 3
 		self.player_dash_speed = 18
 
 		self.dash = False
@@ -81,11 +79,11 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 			# Double Jump
 			if event.key == pygame.K_SPACE or event.key == pygame.K_UP or event.key == pygame.K_w:
 				if self.air_timer < 6:
-					self.player_y_momentum = -12
+					self.player_y_momentum = -6
 				elif self.double_jump > 0:
 					if self.stats["mana"]["current"] >= 5:
 						self.double_jump -= 1
-						self.player_y_momentum = -15
+						self.player_y_momentum = -8
 						self.stats["mana"]["current"] -= 5
 
 		if event.type == pygame.KEYUP:
@@ -98,8 +96,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 				self.player_x_momentum = -self.player_speed
 
 	def update(self):
-		# pygame.sprite.Sprite.update(self)
-		screen.blit(self.image, (self.rect.x - scroll[0], self.rect.y - scroll[1]))
+		pygame.sprite.Sprite.update(self)
 
 		self.player_movement = [0, 0]
 
@@ -108,10 +105,10 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		self.player_movement[1] += self.player_y_momentum
 
-		self.player_y_momentum += 0.6
+		self.player_y_momentum += 0.4
 
-		if self.player_y_momentum > 20:
-			self.player_y_momentum = 20
+		if self.player_y_momentum > 8:
+			self.player_y_momentum = 8
 
 		self.rect, collisions = self.move(self.rect, self.player_movement, self.level.tile_rects)
 

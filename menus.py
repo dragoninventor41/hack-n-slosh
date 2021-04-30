@@ -51,8 +51,8 @@ class Parchment:
 
 player_class_scrolls = []
 
-for count, player_class in enumerate(player_classes):
-	player_class_scrolls.append(Parchment(player_class, 6*SCALE+(count*78*SCALE), screen_percent('y', 50, 72*SCALE)))
+# for count, player_class in enumerate(player_classes):
+	# player_class_scrolls.append(Parchment(player_class, 6*SCALE+(count*78*SCALE), screen_percent('y', 50, 72*SCALE)))
 
 def class_selection_menu():
 	for player_class_scroll in player_class_scrolls:
