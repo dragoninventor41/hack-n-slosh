@@ -28,7 +28,7 @@ class Game():
 		self.player = Player(Mage(), self.level, self.screen)
 
 		# TEMP yeet
-		self.slime = Mob(self.screen, self.level, self.player, f'{self.path}/assets/images/mobs/slime.png', 40, 0.5, 0.1)
+		self.slime = Mob(self.screen, self.level, self.player, f'{self.path}/assets/images/mobs/slime.png', 40, 0.5, 2)
 
 		map_data = pyscroll.TiledMapData(pytmx.load_pygame(f'{self.path}/level_1.tmx'))
 		map_layer = pyscroll.BufferedRenderer(map_data, self.window_size)
@@ -70,4 +70,4 @@ while True:
 	game.run()
 	game.clock.tick(game.fps)
 	pygame.display.flip()
-	print(game.clock.get_fps())
+	# print(game.clock.get_fps())

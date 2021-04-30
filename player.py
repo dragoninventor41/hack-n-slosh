@@ -100,8 +100,6 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		self.player_movement = [0, 0]
 
-		self.player_speed = self.player_speed
-
 		if self.moving_left or self.moving_right:
 			self.player_movement[0] += self.player_x_momentum
 
