@@ -1,18 +1,20 @@
 import pygame
 
 class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
-	def __init__(self, player_class, level, screen):
+	def __init__(self, player_class, level_tile_rects, tile_collision_test, screen):
 		pygame.sprite.Sprite.__init__(self)
 
 		self.player_class = player_class
 
-		self.level = level
+		self.level_tile_rects = level_tile_rects
 
 		# Image
 		self.image = self.player_class.idle_sprite
 
 		# Rect
 		self.rect = self.image.get_rect()
+
+		self.tile_collision_test = tile_collision_test
 
 		# Rect Position
 		self.rect.x = 100
@@ -37,12 +39,10 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 
 		self.stat_upgrades = {
 			"defence": 10,
-			"intelligence": 10,
+			"intelligence": 40,
 			"agility": 0,
 			"strength": 0,
-			"crit damage": 0,
-			"crit chance": 0,
-			"speed": 10
+			"crit chance": 0
 		}
 
 		self.stats = {
@@ -59,7 +59,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 			"defence": self.stat_upgrades["defence"] / 100,
 			"agility": 0,
 			"strength": 0,
-			"crit damage": 120,
+			"crit damage": 200,
 			"crit chance": 15,
 			"speed": 100
 		}
@@ -110,7 +110,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 		if self.player_y_momentum > 8:
 			self.player_y_momentum = 8
 
-		self.rect, collisions = self.move(self.rect, self.player_movement, self.level.tile_rects)
+		self.rect, collisions = self.move(self.rect, self.player_movement, self.level_tile_rects)
 
 		if collisions['bottom']:
 			self.player_y_momentum = 0
@@ -133,7 +133,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 		}
 
 		rect.x += movement[0]
-		hit_list = self.level.collision_test(rect, tiles)
+		hit_list = self.tile_collision_test(rect, tiles)
 		for tile in hit_list:
 			if movement[0] > 0:
 				rect.right = tile.left
@@ -143,7 +143,7 @@ class Player(pygame.sprite.Sprite): # (pygame.sprite.Sprite)
 				collision_types['left'] = True
 
 		rect.y += movement[1]
-		hit_list = self.level.collision_test(rect, tiles)
+		hit_list = self.tile_collision_test(rect, tiles)
 		for tile in hit_list:
 			if movement[1] > 0:
 				rect.bottom = tile.top
